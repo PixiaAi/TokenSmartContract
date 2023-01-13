@@ -878,7 +878,5 @@ contract PixiaAi  is Context, IERC20 {
                 emit Transfer(sender, recipient, tAmount);
             }
         }
-
     }
-
 }
