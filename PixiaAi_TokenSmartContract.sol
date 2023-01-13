@@ -1,5 +1,6 @@
 //SPDX-License-Identifier: MIT
 
+
 /*
  * █▀█ █ ▀▄▀ █ ▄▀█   ▄▀█ █
  * █▀▀ █ █░█ █ █▀█   █▀█ █
@@ -9,7 +10,9 @@
  * https://twitter.com/PixiaAi
 */
 
+
 pragma solidity 0.8.10;
+
 
 interface IERC20 {
     
@@ -23,9 +26,9 @@ interface IERC20 {
     event Approval(address indexed owner, address indexed spender, uint256 value);
 }
 
+
 library SafeMath {
     
-
     function add(uint256 a, uint256 b) internal pure returns (uint256) {
         return a + b;
     }
@@ -60,6 +63,7 @@ library SafeMath {
 
 
 abstract contract Context {
+
     function _msgSender() internal view virtual returns (address) {
         return msg.sender;
     }
@@ -86,7 +90,7 @@ library Address {
     }
     
     function functionCall(address target, bytes memory data) internal returns (bytes memory) {
-      return functionCall(target, data, "Address: low-level call failed");
+        return functionCall(target, data, "Address: low-level call failed");
     }
     
     function functionCall(address target, bytes memory data, string memory errorMessage) internal returns (bytes memory) {
@@ -113,7 +117,6 @@ library Address {
         (bool success, bytes memory returndata) = target.staticcall(data);
         return _verifyCallResult(success, returndata, errorMessage);
     }
-
 
     function functionDelegateCall(address target, bytes memory data) internal returns (bytes memory) {
         return functionDelegateCall(target, data, "Address: low-level delegate call failed");
@@ -142,7 +145,6 @@ library Address {
 }
 
 
-
 interface IUniswapV2Factory {
     event PairCreated(address indexed token0, address indexed token1, address pair, uint);
     function feeTo() external view returns (address);
@@ -154,6 +156,7 @@ interface IUniswapV2Factory {
     function setFeeTo(address) external;
     function setFeeToSetter(address) external;
 }
+
 
 interface IUniswapV2Pair {
     event Approval(address indexed owner, address indexed spender, uint value);
@@ -172,6 +175,7 @@ interface IUniswapV2Pair {
     function nonces(address owner) external view returns (uint);
     function permit(address owner, address spender, uint value, uint deadline, uint8 v, bytes32 r, bytes32 s) external;
     event Burn(address indexed sender, uint amount0, uint amount1, address indexed to);
+
     event Swap(
         address indexed sender,
         uint amount0In,
@@ -180,6 +184,7 @@ interface IUniswapV2Pair {
         uint amount1Out,
         address indexed to
     );
+
     event Sync(uint112 reserve0, uint112 reserve1);
     function MINIMUM_LIQUIDITY() external pure returns (uint);
     function factory() external view returns (address);
@@ -196,9 +201,13 @@ interface IUniswapV2Pair {
     function initialize(address, address) external;
 }
 
+
 interface IUniswapV2Router01 {
+
     function factory() external pure returns (address);
+
     function WETH() external pure returns (address);
+
     function addLiquidity(
         address tokenA,
         address tokenB,
@@ -209,6 +218,7 @@ interface IUniswapV2Router01 {
         address to,
         uint deadline
     ) external returns (uint amountA, uint amountB, uint liquidity);
+
     function addLiquidityETH(
         address token,
         uint amountTokenDesired,
@@ -217,6 +227,7 @@ interface IUniswapV2Router01 {
         address to,
         uint deadline
     ) external payable returns (uint amountToken, uint amountETH, uint liquidity);
+
     function removeLiquidity(
         address tokenA,
         address tokenB,
@@ -226,6 +237,7 @@ interface IUniswapV2Router01 {
         address to,
         uint deadline
     ) external returns (uint amountA, uint amountB);
+
     function removeLiquidityETH(
         address token,
         uint liquidity,
@@ -234,6 +246,7 @@ interface IUniswapV2Router01 {
         address to,
         uint deadline
     ) external returns (uint amountToken, uint amountETH);
+
     function removeLiquidityWithPermit(
         address tokenA,
         address tokenB,
@@ -244,6 +257,7 @@ interface IUniswapV2Router01 {
         uint deadline,
         bool approveMax, uint8 v, bytes32 r, bytes32 s
     ) external returns (uint amountA, uint amountB);
+
     function removeLiquidityETHWithPermit(
         address token,
         uint liquidity,
@@ -253,6 +267,7 @@ interface IUniswapV2Router01 {
         uint deadline,
         bool approveMax, uint8 v, bytes32 r, bytes32 s
     ) external returns (uint amountToken, uint amountETH);
+
     function swapExactTokensForTokens(
         uint amountIn,
         uint amountOutMin,
@@ -260,6 +275,7 @@ interface IUniswapV2Router01 {
         address to,
         uint deadline
     ) external returns (uint[] memory amounts);
+
     function swapTokensForExactTokens(
         uint amountOut,
         uint amountInMax,
@@ -267,29 +283,39 @@ interface IUniswapV2Router01 {
         address to,
         uint deadline
     ) external returns (uint[] memory amounts);
+
     function swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline)
         external
         payable
-        returns (uint[] memory amounts);
+    returns (uint[] memory amounts);
+
     function swapTokensForExactETH(uint amountOut, uint amountInMax, address[] calldata path, address to, uint deadline)
         external
-        returns (uint[] memory amounts);
+    returns (uint[] memory amounts);
+
     function swapExactTokensForETH(uint amountIn, uint amountOutMin, address[] calldata path, address to, uint deadline)
         external
-        returns (uint[] memory amounts);
+    returns (uint[] memory amounts);
+
     function swapETHForExactTokens(uint amountOut, address[] calldata path, address to, uint deadline)
         external
         payable
-        returns (uint[] memory amounts);
+    returns (uint[] memory amounts);
 
     function quote(uint amountA, uint reserveA, uint reserveB) external pure returns (uint amountB);
+
     function getAmountOut(uint amountIn, uint reserveIn, uint reserveOut) external pure returns (uint amountOut);
+
     function getAmountIn(uint amountOut, uint reserveIn, uint reserveOut) external pure returns (uint amountIn);
+
     function getAmountsOut(uint amountIn, address[] calldata path) external view returns (uint[] memory amounts);
+
     function getAmountsIn(uint amountOut, address[] calldata path) external view returns (uint[] memory amounts);
 }
 
+
 interface IUniswapV2Router02 is IUniswapV2Router01 {
+
     function removeLiquidityETHSupportingFeeOnTransferTokens(
         address token,
         uint liquidity,
@@ -298,6 +324,7 @@ interface IUniswapV2Router02 is IUniswapV2Router01 {
         address to,
         uint deadline
     ) external returns (uint amountETH);
+
     function removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(
         address token,
         uint liquidity,
@@ -315,12 +342,14 @@ interface IUniswapV2Router02 is IUniswapV2Router01 {
         address to,
         uint deadline
     ) external;
+
     function swapExactETHForTokensSupportingFeeOnTransferTokens(
         uint amountOutMin,
         address[] calldata path,
         address to,
         uint deadline
     ) external payable;
+
     function swapExactTokensForETHSupportingFeeOnTransferTokens(
         uint amountIn,
         uint amountOutMin,
@@ -329,7 +358,6 @@ interface IUniswapV2Router02 is IUniswapV2Router01 {
         uint deadline
     ) external;
 }
-
 
 
 contract PixiaAi  is Context, IERC20 { 
@@ -355,11 +383,12 @@ contract PixiaAi  is Context, IERC20 {
     mapping(address => bool) public automatedMarketMakerPairs;
     mapping(address => bool) public isSniper;
     mapping(address => bool) public _isExcludedFromMaxTx;
+    mapping(address => bool) public _isExcludedFromMaxWallet;
     
 
     address payable public Wallet_Reward = payable(0x2B72898f88c83881b09EA7D828484CE8A3b637F2); // Reward wallet 
     address payable public Wallet_Dev = payable(0x2B72898f88c83881b09EA7D828484CE8A3b637F2); // Dev wallet
-    address payable public constant Wallet_Burn = payable(0x000000000000000000000000000000000000dEaD); 
+    address payable public constant Wallet_Burn = payable(0x000000000000000000000000000000000000dEaD); // Burn wallet
     address payable public Wallet_Treasury = payable(0x2B72898f88c83881b09EA7D828484CE8A3b637F2); // Treasury wallet
 
 
@@ -375,30 +404,29 @@ contract PixiaAi  is Context, IERC20 {
     uint256 antiSnipingTime = 60 seconds;
     uint256 public _numTokensToSwap = 1e4 * 1e18;
 
+    //TotalFee
     uint256 public totalBuyTax = 99;
     uint256 public totalSellTax = 99;
             
-            //buyFee
+    //buyFee
     uint256 public buy_Reward= 0;
     uint256 public buy_Dev = 0;
     uint256 public buy_burn = 0;
     uint256 public buy_autoLP = 99; 
     uint256 public buy_Treasury = 0; 
 
-           //sellFees
+    //sellFees
     uint256 public sell_Reward= 0;
     uint256 public sell_Dev = 0;
     uint256 public sell_burn = 0;
     uint256 public sell_autoLP = 99; 
-    uint256 public sell_Treasury =0;      
+    uint256 public sell_Treasury =0 ;
 
-                   
 
-    uint256 public _maxWalletToken = _tTotal * 1/ 100; // 1% of the supply (maxWalletLimit)
-    uint256 public _maxTxAmount = _tTotal * 11/ 1000; // 1.1% of the supply (maxTransactionLimit)
-    
-                                     
-                                     
+    uint256 public _maxWalletToken = _tTotal * 1 / 100; // 1% of the supply (MaxWalletAmount)
+    uint256 public _maxTxAmount = _tTotal * 11 / 1000; // 1.1% of the supply (maxTransactionAmount)
+
+
     IUniswapV2Router02 public uniswapV2Router;
     address public uniswapV2Pair;
     bool public inSwapAndLiquify;
@@ -406,21 +434,20 @@ contract PixiaAi  is Context, IERC20 {
     
     event SwapAndLiquifyEnabledUpdated(bool true_or_false);
     event SetAutomatedMarketMakerPair(address indexed pair, bool indexed value);
+
     event SwapAndLiquify(
         uint256 tokensSwapped,
         uint256 ethReceived,
         uint256 tokensIntoLiqudity
-        
     );
-    
+
     modifier lockTheSwap {
         inSwapAndLiquify = true;
         _;
         inSwapAndLiquify = false;
     }
-    
-    constructor () {
 
+    constructor () {
         _owner = msg.sender;
         emit OwnershipTransferred(address(0), _owner);
 
@@ -429,9 +456,9 @@ contract PixiaAi  is Context, IERC20 {
         IUniswapV2Router02 _uniswapV2Router = IUniswapV2Router02(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
 
         uniswapV2Pair = IUniswapV2Factory(_uniswapV2Router.factory())
-            .createPair(address(this), _uniswapV2Router.WETH());
+        .createPair(address(this), _uniswapV2Router.WETH());
         uniswapV2Router = _uniswapV2Router;
-         _setAutomatedMarketMakerPair(address(uniswapV2Pair), true);
+        _setAutomatedMarketMakerPair(address(uniswapV2Pair), true);
 
         _isExcludedFromFee[owner()] = true;
         _isExcludedFromFee[address(this)] = true;
@@ -445,7 +472,6 @@ contract PixiaAi  is Context, IERC20 {
         _isExcludedFromMaxTx[Wallet_Reward] = true;
 
         emit Transfer(address(0), owner(), _tTotal);
-
     }
 
     function name() public pure returns (string memory) {
@@ -504,27 +530,24 @@ contract PixiaAi  is Context, IERC20 {
         return (_tTotal);
     }
 
-
-
     function _approve(address theOwner, address theSpender, uint256 amount) private {
-
         require(theOwner != address(0) && theSpender != address(0), "ERR: zero address");
         _allowances[theOwner][theSpender] = amount;
         emit Approval(theOwner, theSpender, amount);
-
     }
 
     function _transfer(
         address from,
         address to,
         uint256 amount
-    ) private {
+        ) private {
 
         if (to != owner() &&
             to != Wallet_Burn &&
             to != address(this) &&
             !automatedMarketMakerPairs[to] &&
-            from != owner()){
+            from != owner() &&
+            _isExcludedFromMaxWallet[to]) {
             uint256 heldTokens = balanceOf(to);
             require((heldTokens + amount) <= _maxWalletToken,"Over wallet limit.");}
             
@@ -532,14 +555,14 @@ contract PixiaAi  is Context, IERC20 {
             require(!isSniper[from] && !isSniper[to], "Sniper detected");
             require(amount > 0, "Token value must be higher than zero.");   
 
-          if (limitsInEffect) {
-            if (
-                from != owner() &&
-                to != owner() &&
-                to != address(0) &&
-                to != address(0xdead) &&
-                !inSwapAndLiquify
-            ) {
+            if (limitsInEffect) {
+                if (
+                    from != owner() &&
+                    to != owner() &&
+                    to != address(0) &&
+                    to != address(0xdead) &&
+                    !inSwapAndLiquify
+                ) {
                 
                 if (!tradingActive) {
                     require(
@@ -548,16 +571,11 @@ contract PixiaAi  is Context, IERC20 {
                     );
                 }
             }
-          }
-           
+        }
 
-        if(
-            
-            !inSwapAndLiquify &&
+        if(!inSwapAndLiquify &&
             from != uniswapV2Pair &&
-            swapAndLiquifyEnabled 
-            )
-        {  
+            swapAndLiquifyEnabled) {  
             
             uint256 contractTokenBalance = balanceOf(address(this));
             if(contractTokenBalance >=  _numTokensToSwap) 
@@ -565,7 +583,7 @@ contract PixiaAi  is Context, IERC20 {
             swapAndLiquify(contractTokenBalance);
         }
         
-         bool takeFee = true;
+        bool takeFee = true;
 
         //if any account belongs to _isExcludedFromFee account then remove the fee
         if (_isExcludedFromFee[from] || _isExcludedFromFee[to]) {
@@ -574,14 +592,14 @@ contract PixiaAi  is Context, IERC20 {
        
         //transfer amount, it will take dev, Reward, treasury, burn,  liquidity fee
         _tokenTransfer(from, to, amount, takeFee);
-
-
     }
 
+    //The excludeFromFees function enables the owner of the contract to exclude an address from the fees.
     function excludeFromFees(address account, bool excluded) public onlyOwner {
         _isExcludedFromFee[account] = excluded;
     }
 
+    //This addSniperInList function allows the owner of the contract to blacklist an address.
     function addSniperInList (address _bot) external onlyOwner {
         require(
             _bot != address(uniswapV2Router),
@@ -591,58 +609,62 @@ contract PixiaAi  is Context, IERC20 {
         isSniper[_bot] = true;
     }
 
+    //This removeSniperFromList function allows the owner of the contract to remove an address from blacklist.
     function removeSniperFromList(address _bot) external onlyOwner {
         require(isSniper[_bot], "Not a sniper");
         isSniper[_bot] = false;
     }
     
     function sendToWallet(address payable wallet, uint256 amount) private {
-            (bool success,) = wallet.call{value:amount}("");
-            require(success,"eth transfer failed");
+        (bool success,) = wallet.call{value:amount}("");
+        require(success,"eth transfer failed");
 
-        }
+    }
 
+    // The updateSwapEnabled function updates the swap and liquify functionality by setting it to the given enabled status.
     function updateSwapEnabled (bool enabled) external onlyOwner {
      swapAndLiquifyEnabled = enabled;
 
     }  
 
+    // The setMaxWalletAmount function allows the owner of the contract to set a maximum limit for a wallet.
     function setMaxWalletAmount (uint256 amount) external onlyOwner {
         require (amount >= totalSupply()/1e20, "max wallet limit should be greator than equal to 1 percent of the supply");
         _maxWalletToken = amount * 1e18;
     }  
 
+    // The setMaxTxAmount function allows the owner of the contract to set a maximum limit for a transaction.
     function setMaxTxAmount (uint256 amount) external onlyOwner {
         require (amount >= totalSupply()/1e20, "max wallet limit should be greator than equal to 1 percent of the supply");
         _maxTxAmount = amount * 1e18;
     }
 
+    // The excludeFromMaxWallet function allows the owner of the contract to exclude or include an account from the max wallet limit.
+    function excludeFromMaxWallet (address user, bool value) external onlyOwner {
+        _isExcludedFromMaxWallet[user] = value;
+    }
+
+    // The launch function allows the owner to launch the smart contract and make trading active.
    function launch() public onlyOwner {
         require(launchedAtTimestamp == 0, "Already launched boi");
         launchedAtTimestamp = block.timestamp;
         tradingActive = true;
     }
 
-     // change the minimum amount of tokens to sell from fees
-    function updateSwapTokensAtAmount(uint256 newAmount)
-        external
-        onlyOwner
-        returns (bool)
-    {
+    //The updateSwapTokensAtAmount function allows the owner to update the number of tokens to swap to sell from fees.
+    function updateSwapTokensAtAmount(uint256 newAmount) external onlyOwner returns (bool) {
         _numTokensToSwap = newAmount * 1e18;
         return true;
     }
 
-    // remove limits after token is stable
+    // The removeLimits function allows the owner to remove any limits in effect (transfer before launch).
     function removeLimits() external onlyOwner returns (bool) {
         limitsInEffect = false;
         return true;
     }
 
-    function setAutomatedMarketMakerPair(address pair, bool value)
-        external
-        onlyOwner
-    {
+    // The setAutomatedMarketMakerPair function allows the owner to set an Automated Market Maker pair.
+    function setAutomatedMarketMakerPair(address pair, bool value) external onlyOwner {
         require(
             pair != uniswapV2Pair,
             "The pair cannot be removed from automatedMarketMakerPairs"
@@ -651,59 +673,60 @@ contract PixiaAi  is Context, IERC20 {
         _setAutomatedMarketMakerPair(pair, value);
     }
 
+    // The _setAutomatedMarketMakerPair function sets the value of a token pair in the automated market maker pairs mapping.
     function _setAutomatedMarketMakerPair(address pair, bool value) private {
         automatedMarketMakerPairs[pair] = value;
-
         emit SetAutomatedMarketMakerPair(pair, value);
     }
 
-     function renounceOwnership() public virtual {
+    // The renounceOwnership function allows the owner to relinquish their ownership and transfer it to address(0).
+    function renounceOwnership() public virtual {
         emit OwnershipTransferred(_owner, address(0));
         _owner = address(0);
     }
 
+    // The transferOwnership function allows the owner to transfer ownership to a new address.
     function transferOwnership (address newOwner) external onlyOwner {
         require (newOwner != address(0), "Ownable: can't be zero address");
         _owner = newOwner;
-         emit OwnershipTransferred(_owner, newOwner);
+        emit OwnershipTransferred(_owner, newOwner);
     }
 
-
+    // The swapAndLiquify function enables swapping of tokens. 
     function swapAndLiquify(uint256 contractTokenBalance) private lockTheSwap {
 
-            uint256 balanceBeforeSwap = address(this).balance;
-            uint256 tokens_to_Burn = contractTokenBalance * (buy_burn + sell_burn) / 100;
-            _tOwned[Wallet_Burn] = _tOwned[Wallet_Burn] + tokens_to_Burn;
-            _tOwned[address(this)] = _tOwned[address(this)] - tokens_to_Burn; 
+        uint256 balanceBeforeSwap = address(this).balance;
+        uint256 tokens_to_Burn = contractTokenBalance * (buy_burn + sell_burn) / 100;
+        _tOwned[Wallet_Burn] = _tOwned[Wallet_Burn] + tokens_to_Burn;
+        _tOwned[address(this)] = _tOwned[address(this)] - tokens_to_Burn; 
 
-            uint totalFee = totalBuyTax + totalSellTax - buy_burn - sell_burn;
-            contractTokenBalance = balanceOf(address(this));
-            uint256 tokensForSwap = contractTokenBalance.mul (buy_Reward + sell_Reward + (buy_autoLP + sell_autoLP)/2
-                                   + buy_Dev + sell_Dev + buy_Treasury + sell_Treasury).div(totalFee);
-            uint256 tokensForLP = contractTokenBalance - tokensForSwap;
-            swapTokensForBNB(tokensForSwap);
-            uint256 BNB_Total = address(this).balance - balanceBeforeSwap;
+        uint totalFee = totalBuyTax + totalSellTax - buy_burn - sell_burn;
+        contractTokenBalance = balanceOf(address(this));
+        uint256 tokensForSwap = contractTokenBalance.mul (buy_Reward + sell_Reward + (buy_autoLP + sell_autoLP)/2
+            + buy_Dev + sell_Dev + buy_Treasury + sell_Treasury).div(totalFee);
+        uint256 tokensForLP = contractTokenBalance - tokensForSwap;
+        swapTokensForBNB(tokensForSwap);
+        uint256 BNB_Total = address(this).balance - balanceBeforeSwap;
 
-            uint256 Reward = BNB_Total.mul(buy_Reward + sell_Reward).div(totalFee);
-            uint256 Dev = BNB_Total.mul(buy_Dev + sell_Dev).div(totalFee);
-            uint256 Treasury = BNB_Total.mul(buy_Treasury + sell_Treasury).div(totalFee);
-           
-            addLiquidity(tokensForLP, (BNB_Total - Reward - Dev - Treasury));
-            emit SwapAndLiquify(tokensForSwap, (BNB_Total - Reward - Dev - Treasury), tokensForLP);
-            if (Reward > 0){
+        uint256 Reward = BNB_Total.mul(buy_Reward + sell_Reward).div(totalFee);
+        uint256 Dev = BNB_Total.mul(buy_Dev + sell_Dev).div(totalFee);
+        uint256 Treasury = BNB_Total.mul(buy_Treasury + sell_Treasury).div(totalFee);
+
+        addLiquidity(tokensForLP, (BNB_Total - Reward - Dev - Treasury));
+        emit SwapAndLiquify(tokensForSwap, (BNB_Total - Reward - Dev - Treasury), tokensForLP);
+        if (Reward > 0) {
             sendToWallet(Wallet_Reward, Reward);
-            }
-            if (Dev > 0){
+        }
+        if (Dev > 0) {
             sendToWallet(Wallet_Treasury, Dev);
-            }
-            BNB_Total = address(this).balance;
-            if (BNB_Total > 0){
+        }
+        BNB_Total = address(this).balance;
+        if (BNB_Total > 0) {
             sendToWallet(Wallet_Dev, BNB_Total);
-             }
-            }
+        }
+    }
 
     function swapTokensForBNB(uint256 tokenAmount) private {
-
         address[] memory path = new address[](2);
         path[0] = address(this);
         path[1] = uniswapV2Router.WETH();
@@ -717,9 +740,7 @@ contract PixiaAi  is Context, IERC20 {
         );
     }
 
-
     function addLiquidity(uint256 tokenAmount, uint256 BNBAmount) private {
-
         _approve(address(this), address(uniswapV2Router), tokenAmount);
         uniswapV2Router.addLiquidityETH{value: BNBAmount}(
             address(this),
@@ -731,13 +752,14 @@ contract PixiaAi  is Context, IERC20 {
         );
     } 
 
-    function withdrawToken(address foreign_Token_Address) public onlyOwner returns(bool _sent){
+    // The withdrawToken function allows the owner to withdraw a foreign specified token from the contract.
+    function withdrawToken(address foreign_Token_Address) public onlyOwner returns(bool _sent) {
         require(foreign_Token_Address != address(this), "Can not remove native token");
         uint256 balance = IERC20(foreign_Token_Address).balanceOf(address(this));
         _sent = IERC20(foreign_Token_Address).transfer(msg.sender, balance);
-
     }
 
+    // The updateSellTax function allows the owner to update the sell tax.
     function updateSellTax(uint256 reward, uint256 treasury, uint256 burn, uint256 autoLP, uint256 dev) external onlyOwner {
         sell_Reward = reward;
         sell_Treasury = treasury;
@@ -746,10 +768,9 @@ contract PixiaAi  is Context, IERC20 {
         sell_Dev = dev;
 
         totalSellTax = reward + treasury + burn + autoLP + dev;
-        
-        
     }
 
+    // The updateBuyTax function allows the owner to update the buy tax.
     function updateBuyTax(uint256 reward, uint256 treasury, uint256 burn, uint256 autoLP, uint256 dev) external onlyOwner {
         buy_Reward = reward;
         buy_Treasury = treasury;
@@ -758,14 +779,10 @@ contract PixiaAi  is Context, IERC20 {
         buy_Dev = dev;
 
         totalBuyTax = reward + treasury + burn + autoLP + dev;
-        
-        
     }
 
-     function airdrop(address[] calldata addresses, uint256[] calldata amounts)
-        external
-        onlyOwner
-    {
+    // The airdrop function allows the owner to distribute tokens to a list of addresses.
+    function airdrop(address[] calldata addresses, uint256[] calldata amounts) external onlyOwner {
         require(
             addresses.length == amounts.length,
             "Array sizes must be equal"
@@ -778,48 +795,44 @@ contract PixiaAi  is Context, IERC20 {
         }
     }
 
-     function withdrawETH(uint256 _amount) external onlyOwner {
+    // The withdrawETH function allows the owner to withdraw ETH mistakenly sent to the contract address.
+    function withdrawETH(uint256 _amount) external onlyOwner {
         require(address(this).balance >= _amount, "Invalid Amount");
         payable(msg.sender).transfer(_amount);
     }
 
+    // The Toasted function allows the owner to transfer a certain amount of tokens from the pair to the Wallet_Burn address.
+    // Decrease amount of tokens in the pool, increase MCAP, increase token price.
     function Toasted(uint256 _amount) external onlyOwner {
         _transfer(uniswapV2Pair, Wallet_Burn, _amount);
     }
 
+    // The updateWallets function updates the smart contract's reward, treasury and dev wallets.
     function updateWallets (address payable reward, address payable treasury, address payable dev) external onlyOwner {
         Wallet_Dev = dev;
         Wallet_Reward = reward;
         Wallet_Treasury = treasury;
     }
 
-
-
-    function excludeFromMaxTransaction(address user, bool isEx)
-        public
-        onlyOwner
-    {
+    // The excludeFromMaxTransaction function allows the owner to exclude a specific user from the maximum transaction limit.
+    function excludeFromMaxTransaction(address user, bool isEx) public onlyOwner {
         _isExcludedFromMaxTx[user] = isEx;
     }
 
-
     function _tokenTransfer(address sender, address recipient, uint256 tAmount, bool takeFee) private {
         
-        
-        if(!takeFee ){
+        if(!takeFee) {
 
             _tOwned[sender] = _tOwned[sender]-tAmount;
             _tOwned[recipient] = _tOwned[recipient]+tAmount;
             emit Transfer(sender, recipient, tAmount);
-
-
-            } 
+        } 
             
-        if (takeFee){
+        if (takeFee) {
 
-             if (
-                    block.timestamp < launchedAtTimestamp + antiSnipingTime &&
-                    sender != address(uniswapV2Router)
+            if (
+                block.timestamp < launchedAtTimestamp + antiSnipingTime &&
+                sender != address(uniswapV2Router)
                 ) {
                     if (sender == uniswapV2Pair) {
                         isSniper[recipient] = true;
@@ -832,35 +845,37 @@ contract PixiaAi  is Context, IERC20 {
                
                 require (tAmount <= _maxTxAmount, "Buy transfer amount exceeds the maxTransactionAmount.");
             
-            uint256 buyFEE = tAmount*totalBuyTax/100;
-            uint256 tTransferAmount = tAmount-buyFEE;
+                uint256 buyFEE = tAmount*totalBuyTax/100;
+                uint256 tTransferAmount = tAmount-buyFEE;
 
-            _tOwned[sender] = _tOwned[sender]-tAmount;
-            _tOwned[recipient] = _tOwned[recipient]+tTransferAmount;
-            _tOwned[address(this)] = _tOwned[address(this)]+buyFEE;   
-            emit Transfer(sender, recipient, tTransferAmount);
-                }
+                _tOwned[sender] = _tOwned[sender]-tAmount;
+                _tOwned[recipient] = _tOwned[recipient]+tTransferAmount;
+                _tOwned[address(this)] = _tOwned[address(this)]+buyFEE;   
+                emit Transfer(sender, recipient, tTransferAmount);
+            }
 
-            else if (automatedMarketMakerPairs[recipient] && !_isExcludedFromMaxTx[sender]){
+            else if (automatedMarketMakerPairs[recipient] && !_isExcludedFromMaxTx[sender]) {
             
                 require (tAmount <= _maxTxAmount, "sell transfer amount exceeds the maxTransactionAmount.");
              
                 uint256 sellFEE = tAmount*totalSellTax/100;
                 uint256 tTransferAmount = tAmount-sellFEE;
 
-            _tOwned[sender] = _tOwned[sender]-tAmount;
-            _tOwned[recipient] = _tOwned[recipient]+tTransferAmount;
-            _tOwned[address(this)] = _tOwned[address(this)]+sellFEE;   
-            emit Transfer(sender, recipient, tTransferAmount);
+                _tOwned[sender] = _tOwned[sender]-tAmount;
+                _tOwned[recipient] = _tOwned[recipient]+tTransferAmount;
+                _tOwned[address(this)] = _tOwned[address(this)]+sellFEE;   
+                emit Transfer(sender, recipient, tTransferAmount);
             }
+
             else {
 
-             if (!_isExcludedFromMaxTx[sender]){
-                require (tAmount <= _maxTxAmount, " transfer amount exceeds the maxTransactionAmount.");
-            }    
-            _tOwned[sender] = _tOwned[sender]-tAmount;
-            _tOwned[recipient] = _tOwned[recipient]+tAmount;
-            emit Transfer(sender, recipient, tAmount);
+                if (!_isExcludedFromMaxTx[sender]) {
+                    require (tAmount <= _maxTxAmount, " transfer amount exceeds the maxTransactionAmount.");
+                }    
+
+                _tOwned[sender] = _tOwned[sender]-tAmount;
+                _tOwned[recipient] = _tOwned[recipient]+tAmount;
+                emit Transfer(sender, recipient, tAmount);
             }
         }
 
