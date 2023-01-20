@@ -464,12 +464,13 @@ contract PixiaAi  is Context, IERC20 {
         _isExcludedFromFee[address(this)] = true;
         _isExcludedFromFee[Wallet_Reward] = true; 
         _isExcludedFromFee[Wallet_Burn] = true;
+        _isExcludedFromFee[Wallet_Treasury] = true;
 
         _isExcludedFromMaxTx[address(uniswapV2Router)] = true;
-        _isExcludedFromMaxTx[address(uniswapV2Pair)] = true;
         _isExcludedFromMaxTx[owner()] = true;
         _isExcludedFromMaxTx[address(0xdead)] = true;
         _isExcludedFromMaxTx[Wallet_Reward] = true;
+        _isExcludedFromMaxTx[Wallet_Treasury] = true;
 
         emit Transfer(address(0), owner(), _tTotal);
     }
@@ -546,8 +547,8 @@ contract PixiaAi  is Context, IERC20 {
             to != Wallet_Burn &&
             to != address(this) &&
             !automatedMarketMakerPairs[to] &&
-            from != owner() &&
-            _isExcludedFromMaxWallet[to]) {
+            !_isExcludedFromMaxWallet[to] &&
+            from != owner()) {
             uint256 heldTokens = balanceOf(to);
             require((heldTokens + amount) <= _maxWalletToken,"Over wallet limit.");}
             
