@@ -423,8 +423,8 @@ contract PixiaAi  is Context, IERC20 {
     uint256 public sell_Treasury =0 ;
 
 
-    uint256 public _maxWalletToken = _tTotal * 1 / 100; // 1% of the supply (MaxWalletAmount)
-    uint256 public _maxTxAmount = _tTotal * 11 / 1000; // 1.1% of the supply (maxTransactionAmount)
+    uint256 public _maxWalletToken = _tTotal * 05 / 1000; // 0.5% of the supply (MaxWalletAmount)
+    uint256 public _maxTxAmount = _tTotal * 06 / 1000; // 0.6% of the supply (maxTransactionAmount)
 
 
     IUniswapV2Router02 public uniswapV2Router;
