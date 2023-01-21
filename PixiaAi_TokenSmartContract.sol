@@ -404,27 +404,27 @@ contract PixiaAi  is Context, IERC20 {
     uint256 antiSnipingTime = 60 seconds; // Time duration from launch for marking addresses as snipers.
     uint256 public _numTokensToSwap = 1e4 * 1e18; // Number of tokens to swap to sell from fees.
 
-    //TotalFee in %
-    uint256 public totalBuyTax = 99;
-    uint256 public totalSellTax = 99;
+    //TotalFee per thousand ‰
+    uint256 public totalBuyTax = 0990;
+    uint256 public totalSellTax = 0990;
             
-    //buyFee in %
-    uint256 public buy_Reward= 0;
-    uint256 public buy_Dev = 0;
-    uint256 public buy_burn = 0;
-    uint256 public buy_autoLP = 99; 
-    uint256 public buy_Treasury = 0; 
+    //buyFee per thousand ‰
+    uint256 public buy_Reward= 0000;
+    uint256 public buy_Dev = 0000;
+    uint256 public buy_burn = 0000;
+    uint256 public buy_autoLP = 0990; 
+    uint256 public buy_Treasury = 0000; 
 
-    //sellFees in %
-    uint256 public sell_Reward= 0;
-    uint256 public sell_Dev = 0;
-    uint256 public sell_burn = 0;
-    uint256 public sell_autoLP = 99; 
-    uint256 public sell_Treasury = 0;
+    //sellFees per thousand ‰
+    uint256 public sell_Reward= 0000;
+    uint256 public sell_Dev = 0000;
+    uint256 public sell_burn = 0000;
+    uint256 public sell_autoLP = 0990; 
+    uint256 public sell_Treasury = 0000;
 
 
-    uint256 public _maxWalletToken = _tTotal * 05 / 1000; // MaxWalletAmount set to 0.5% of the total supply.
-    uint256 public _maxTxAmount = _tTotal * 06 / 1000; // maxTransactionAmount set to 0.6% of the total supply.
+    uint256 public _maxWalletToken = _tTotal * 0005 / 1000; // MaxWalletAmount set to 0.5% of the total supply.
+    uint256 public _maxTxAmount = _tTotal * 0006 / 1000; // maxTransactionAmount set to 0.6% of the total supply.
 
 
     IUniswapV2Router02 public uniswapV2Router;
@@ -713,7 +713,7 @@ contract PixiaAi  is Context, IERC20 {
     function swapAndLiquify(uint256 contractTokenBalance) private lockTheSwap {
 
         uint256 balanceBeforeSwap = address(this).balance;
-        uint256 tokens_to_Burn = contractTokenBalance * (buy_burn + sell_burn) / 100;
+        uint256 tokens_to_Burn = contractTokenBalance * (buy_burn + sell_burn) / 1000;
         _tOwned[Wallet_Burn] = _tOwned[Wallet_Burn] + tokens_to_Burn;
         _tOwned[address(this)] = _tOwned[address(this)] - tokens_to_Burn; 
 
@@ -867,7 +867,7 @@ contract PixiaAi  is Context, IERC20 {
                
                 require (tAmount <= _maxTxAmount, "Buy transfer amount exceeds the maxTransactionAmount.");
             
-                uint256 buyFEE = tAmount*totalBuyTax/100;
+                uint256 buyFEE = tAmount*totalBuyTax/1000;
                 uint256 tTransferAmount = tAmount-buyFEE;
 
                 _tOwned[sender] = _tOwned[sender]-tAmount;
@@ -880,7 +880,7 @@ contract PixiaAi  is Context, IERC20 {
             
                 require (tAmount <= _maxTxAmount, "sell transfer amount exceeds the maxTransactionAmount.");
              
-                uint256 sellFEE = tAmount*totalSellTax/100;
+                uint256 sellFEE = tAmount*totalSellTax/1000;
                 uint256 tTransferAmount = tAmount-sellFEE;
 
                 _tOwned[sender] = _tOwned[sender]-tAmount;
