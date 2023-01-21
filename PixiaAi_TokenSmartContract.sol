@@ -380,10 +380,10 @@ contract PixiaAi  is Context, IERC20 {
     mapping (address => uint256) private _tOwned;
     mapping (address => mapping (address => uint256)) private _allowances;
     mapping (address => bool) public _isExcludedFromFee; 
-    mapping(address => bool) public automatedMarketMakerPairs;
-    mapping(address => bool) public isSniper;
-    mapping(address => bool) public _isExcludedFromMaxTx;
-    mapping(address => bool) public _isExcludedFromMaxWallet;
+    mapping (address => bool) public _isExcludedFromMaxTx;
+    mapping (address => bool) public _isExcludedFromMaxWallet;
+    mapping (address => bool) public automatedMarketMakerPairs;
+    mapping (address => bool) public isSniper;
     
 
     address payable public Wallet_Reward = payable(0x306968Ccc755Eb0984F57A5729d28346aadb8db7); // Reward wallet 
@@ -424,7 +424,7 @@ contract PixiaAi  is Context, IERC20 {
 
 
     uint256 public _maxWalletToken = _tTotal * 0005 / 1000; // MaxWalletAmount set to 0.5% of the total supply.
-    uint256 public _maxTxAmount = _tTotal * 0006 / 1000; // maxTransactionAmount set to 0.6% of the total supply.
+    uint256 public _maxTxAmount = _tTotal * 0006 / 1000; // MaxTxAmount set to 0.6% of the total supply.
 
 
     IUniswapV2Router02 public uniswapV2Router;
