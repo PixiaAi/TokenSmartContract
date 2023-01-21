@@ -637,20 +637,18 @@ contract PixiaAi  is Context, IERC20 {
     function sendToWallet(address payable wallet, uint256 amount) private {
         (bool success,) = wallet.call{value:amount}("");
         require(success,"eth transfer failed");
-
     }
 
     // The updateSwapEnabled function updates the swap and liquify functionality by setting it to the given enabled status.
     function updateSwapEnabled (bool enabled) external onlyOwner {
      swapAndLiquifyEnabled = enabled;
-
-    }  
+    }
 
     // The setMaxWalletAmount function allows the owner of the contract to set a maximum limit for a wallet.
     function setMaxWalletAmount (uint256 amount) external onlyOwner {
         require (amount >= totalSupply()/1e20, "max wallet limit should be greator than equal to 1 percent of the supply");
         _maxWalletToken = amount * 1e18;
-    }  
+    }
 
     // The setMaxTxAmount function allows the owner of the contract to set a maximum limit for a transaction.
     function setMaxTxAmount (uint256 amount) external onlyOwner {
