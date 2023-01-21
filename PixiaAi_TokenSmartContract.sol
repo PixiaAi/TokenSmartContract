@@ -608,7 +608,7 @@ contract PixiaAi  is Context, IERC20 {
             takeFee = false;
         }
        
-        // This code block indicates the transfer include fees.
+        // This code line indicates the transfer include fees.
         _tokenTransfer(from, to, amount, takeFee);
     }
 
