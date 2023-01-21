@@ -386,45 +386,45 @@ contract PixiaAi  is Context, IERC20 {
     mapping(address => bool) public _isExcludedFromMaxWallet;
     
 
-    address payable public Wallet_Reward = payable(0x2B72898f88c83881b09EA7D828484CE8A3b637F2); // Reward wallet 
-    address payable public Wallet_Dev = payable(0x2B72898f88c83881b09EA7D828484CE8A3b637F2); // Dev wallet
+    address payable public Wallet_Reward = payable(0x306968Ccc755Eb0984F57A5729d28346aadb8db7); // Reward wallet 
+    address payable public Wallet_Dev = payable(0x306968Ccc755Eb0984F57A5729d28346aadb8db7); // Dev wallet
     address payable public constant Wallet_Burn = payable(0x000000000000000000000000000000000000dEaD); // Burn wallet
-    address payable public Wallet_Treasury = payable(0x2B72898f88c83881b09EA7D828484CE8A3b637F2); // Treasury wallet
+    address payable public Wallet_Treasury = payable(0x306968Ccc755Eb0984F57A5729d28346aadb8db7); // Treasury wallet
 
 
     uint256 private constant MAX = ~uint256(0);
     uint8 private constant _decimals = 18;
-    uint256 private _tTotal = 1e8 * 1e18; //100 million tokens
-    string private constant _name = "PixiaAi"; 
-    string private constant _symbol = unicode"PIXIA"; 
+    uint256 private _tTotal = 1e8 * 1e18; // Total Supply: 100 million tokens.
+    string private constant _name = "PixiaAi"; // Token name.
+    string private constant _symbol = unicode"PIXIA"; // Token symbol.
 
-    bool public tradingActive = false;
-    bool public limitsInEffect = true;
+    bool public tradingActive = false; // Trading inactive.
+    bool public limitsInEffect = true; // Transfers inactive & Transfer to dead address active.
     uint256 public launchedAtTimestamp;
-    uint256 antiSnipingTime = 60 seconds;
-    uint256 public _numTokensToSwap = 1e4 * 1e18;
+    uint256 antiSnipingTime = 60 seconds; // Time duration from launch for marking addresses as snipers.
+    uint256 public _numTokensToSwap = 1e4 * 1e18; // Number of tokens to swap to sell from fees.
 
-    //TotalFee
+    //TotalFee in %
     uint256 public totalBuyTax = 99;
     uint256 public totalSellTax = 99;
             
-    //buyFee
+    //buyFee in %
     uint256 public buy_Reward= 0;
     uint256 public buy_Dev = 0;
     uint256 public buy_burn = 0;
     uint256 public buy_autoLP = 99; 
     uint256 public buy_Treasury = 0; 
 
-    //sellFees
+    //sellFees in %
     uint256 public sell_Reward= 0;
     uint256 public sell_Dev = 0;
     uint256 public sell_burn = 0;
     uint256 public sell_autoLP = 99; 
-    uint256 public sell_Treasury =0 ;
+    uint256 public sell_Treasury = 0;
 
 
-    uint256 public _maxWalletToken = _tTotal * 05 / 1000; // 0.5% of the supply (MaxWalletAmount)
-    uint256 public _maxTxAmount = _tTotal * 06 / 1000; // 0.6% of the supply (maxTransactionAmount)
+    uint256 public _maxWalletToken = _tTotal * 05 / 1000; // MaxWalletAmount set to 0.5% of the total supply.
+    uint256 public _maxTxAmount = _tTotal * 06 / 1000; // maxTransactionAmount set to 0.6% of the total supply.
 
 
     IUniswapV2Router02 public uniswapV2Router;
@@ -475,74 +475,90 @@ contract PixiaAi  is Context, IERC20 {
         emit Transfer(address(0), owner(), _tTotal);
     }
 
+    // The name function returns the name of the token.
     function name() public pure returns (string memory) {
         return _name;
     }
 
+   // The symbol function returns the symbol of the token.
     function symbol() public pure returns (string memory) {
         return _symbol;
     }
 
+   // The decimals function returns the number of decimal places used by the token.
     function decimals() public pure returns (uint8) {
         return _decimals;
     }
 
+    // The totalSupply function returns the total supply of tokens in the contract.
     function totalSupply() public view override returns (uint256) {
         return _tTotal;
     }
 
+    // The balanceOf function returns the balance of tokens for an address.
     function balanceOf(address account) public view override returns (uint256) {
         return _tOwned[account];
     }
 
+    // The transfer function transfers tokens to a recipient.
     function transfer(address recipient, uint256 amount) public override returns (bool) {
         _transfer(_msgSender(), recipient, amount);
         return true;
     }
 
+    // The allowance function returns the allowance of a spender to spend tokens on behalf of an owner.
     function allowance(address theOwner, address theSpender) public view override returns (uint256) {
         return _allowances[theOwner][theSpender];
     }
 
+    // The approve function approves an address to spend a certain amount of tokens.
     function approve(address spender, uint256 amount) public override returns (bool) {
         _approve(_msgSender(), spender, amount);
         return true;
     }
 
+    // The transferFrom function transfers a certain amount of tokens from one address to another, then updates the allowance.
     function transferFrom(address sender, address recipient, uint256 amount) public override returns (bool) {
         _transfer(sender, recipient, amount);
         _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "ERC20: transfer amount exceeds allowance"));
         return true;
     }
 
+    // The increaseAllowance function increases the allowance of a spender.
     function increaseAllowance(address spender, uint256 addedValue) public virtual returns (bool) {
         _approve(_msgSender(), spender, _allowances[_msgSender()][spender].add(addedValue));
         return true;
     }
 
+    // The decreaseAllowance function decrease the allowance of a spender.
     function decreaseAllowance(address spender, uint256 subtractedValue) public virtual returns (bool) {
         _approve(_msgSender(), spender, _allowances[_msgSender()][spender].sub(subtractedValue, "ERC20: decreased allowance below zero"));
         return true;
     }
 
+    // This function is a fallback function that allows the contract address to receive ether.
     receive() external payable {}
 
+    // The _getCurrentSupply function returns the total supply of tokens (private function).
     function _getCurrentSupply() private view returns(uint256) {
         return (_tTotal);
     }
 
+    // The _approve function updates the allowance of a spender for an owner and emits an Approval event (private function).
     function _approve(address theOwner, address theSpender, uint256 amount) private {
         require(theOwner != address(0) && theSpender != address(0), "ERR: zero address");
         _allowances[theOwner][theSpender] = amount;
         emit Approval(theOwner, theSpender, amount);
     }
 
+    // The _transfer function handles token transfers between different addresses (private function).
     function _transfer(
         address from,
         address to,
         uint256 amount
         ) private {
 
+        //  This code block checks if the transfer is over the max wallet limit, if the sender and recipient are not "snipers", if the amount is higher than 0, if limits are in effect and if trading is active.
         if (to != owner() &&
             to != Wallet_Burn &&
             to != address(this) &&
@@ -554,7 +570,7 @@ contract PixiaAi  is Context, IERC20 {
             
             require(from != address(0) && to != address(0), "ERR: Using 0 address!");
             require(!isSniper[from] && !isSniper[to], "Sniper detected");
-            require(amount > 0, "Token value must be higher than zero.");   
+            require(amount > 0, "Token value must be higher than zero.");
 
             if (limitsInEffect) {
                 if (
@@ -564,7 +580,7 @@ contract PixiaAi  is Context, IERC20 {
                     to != address(0xdead) &&
                     !inSwapAndLiquify
                 ) {
-                
+
                 if (!tradingActive) {
                     require(
                         _isExcludedFromFee[from] || _isExcludedFromFee[to],
@@ -574,6 +590,7 @@ contract PixiaAi  is Context, IERC20 {
             }
         }
 
+        // This code block checks if the swap and liquify is enabled.
         if(!inSwapAndLiquify &&
             from != uniswapV2Pair &&
             swapAndLiquifyEnabled) {  
@@ -586,21 +603,21 @@ contract PixiaAi  is Context, IERC20 {
         
         bool takeFee = true;
 
-        //if any account belongs to _isExcludedFromFee account then remove the fee
+        // This code block checks if the 'from' or 'to' address is excluded from fee.
         if (_isExcludedFromFee[from] || _isExcludedFromFee[to]) {
             takeFee = false;
         }
        
-        //transfer amount, it will take dev, Reward, treasury, burn,  liquidity fee
+        // This code block indicates the transfer include fees.
         _tokenTransfer(from, to, amount, takeFee);
     }
 
-    //The excludeFromFees function enables the owner of the contract to exclude an address from the fees.
+    // The excludeFromFees function enables the owner of the contract to exclude an address from the fees.
     function excludeFromFees(address account, bool excluded) public onlyOwner {
         _isExcludedFromFee[account] = excluded;
     }
 
-    //This addSniperInList function allows the owner of the contract to blacklist an address.
+    // The addSniperInList function allows the owner of the contract to blacklist an address.
     function addSniperInList (address _bot) external onlyOwner {
         require(
             _bot != address(uniswapV2Router),
@@ -610,12 +627,13 @@ contract PixiaAi  is Context, IERC20 {
         isSniper[_bot] = true;
     }
 
-    //This removeSniperFromList function allows the owner of the contract to remove an address from blacklist.
+    // The removeSniperFromList function allows the owner of the contract to remove an address from blacklist.
     function removeSniperFromList(address _bot) external onlyOwner {
         require(isSniper[_bot], "Not a sniper");
         isSniper[_bot] = false;
     }
     
+    // The sendToWallet function sends ether to a payable address (private function).
     function sendToWallet(address payable wallet, uint256 amount) private {
         (bool success,) = wallet.call{value:amount}("");
         require(success,"eth transfer failed");
@@ -652,7 +670,7 @@ contract PixiaAi  is Context, IERC20 {
         tradingActive = true;
     }
 
-    //The updateSwapTokensAtAmount function allows the owner to update the number of tokens to swap to sell from fees.
+    // The updateSwapTokensAtAmount function allows the owner to update the number of tokens to swap to sell from fees.
     function updateSwapTokensAtAmount(uint256 newAmount) external onlyOwner returns (bool) {
         _numTokensToSwap = newAmount * 1e18;
         return true;
@@ -727,6 +745,7 @@ contract PixiaAi  is Context, IERC20 {
         }
     }
 
+    // The swapTokensForBNB function swaps a certain amount of tokens for ETH (private function).
     function swapTokensForBNB(uint256 tokenAmount) private {
         address[] memory path = new address[](2);
         path[0] = address(this);
@@ -741,6 +760,7 @@ contract PixiaAi  is Context, IERC20 {
         );
     }
 
+    // The addLiquidity function adds liquidity to the pool (private function).
     function addLiquidity(uint256 tokenAmount, uint256 BNBAmount) private {
         _approve(address(this), address(uniswapV2Router), tokenAmount);
         uniswapV2Router.addLiquidityETH{value: BNBAmount}(
@@ -751,7 +771,7 @@ contract PixiaAi  is Context, IERC20 {
             Wallet_Burn, 
             block.timestamp
         );
-    } 
+    }
 
     // The withdrawToken function allows the owner to withdraw a foreign specified token from the contract.
     function withdrawToken(address foreign_Token_Address) public onlyOwner returns(bool _sent) {
@@ -820,6 +840,7 @@ contract PixiaAi  is Context, IERC20 {
         _isExcludedFromMaxTx[user] = isEx;
     }
 
+    //The _tokenTransfer function is used to transfer tokens between two addresses, with the option to take a fee or not.
     function _tokenTransfer(address sender, address recipient, uint256 tAmount, bool takeFee) private {
         
         if(!takeFee) {
@@ -828,7 +849,9 @@ contract PixiaAi  is Context, IERC20 {
             _tOwned[recipient] = _tOwned[recipient]+tAmount;
             emit Transfer(sender, recipient, tAmount);
         } 
-            
+        
+        // This code block checks for a sniper attack by comparing the current block timestamp with a preset antiSnipingTime variable and marking the sender or recipient as a sniper.
+        // It also checks for maximum transaction amount and fee exclusion for the sender and recipient, and applies the appropriate transfer and fee calculations.
         if (takeFee) {
 
             if (
