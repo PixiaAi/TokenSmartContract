@@ -1052,16 +1052,13 @@ contract PixiaAI is ERC20, Ownable {
 
     // The claimEther function allows the owner to withdraw ETH mistakenly sent to the contract address.
     function claimEther () external onlyOwner {
-        require(address(this).balance >= 0, "No Ether");
         payable(msg.sender).transfer(address(this).balance);
     }
 
     // The excludeFromFees function enables the owner of the contract to exclude an address from the fees.
     function excludeFromFees(address account, bool excluded) public onlyOwner {
         require(
-            _isExcludedFromFees[account] != excluded,
-            "PixiaAI: Account is already excluded"
-        );
+            _isExcludedFromFees[account] != excluded); //"PixiaAI: Account is already excluded"
         _isExcludedFromFees[account] = excluded;
 
         emit ExcludeFromFees(account, excluded);
@@ -1095,7 +1092,8 @@ contract PixiaAI is ERC20, Ownable {
 
         totalBuyFee = buyFee.staking + buyFee.dev + buyFee.autoLP + buyFee.burn + buyFee.treasury 
         + buyFee.partner + buyFee.integration;
-        require (totalBuyFee <=200, "Max buy Fees limit is 20 percent");
+       // Max buy Fees limit is 20 percent, 1000 is used a divisor
+        require (totalBuyFee <=200);
     }
 
     // The setSellFees function allows the owner to update the sell tax.
@@ -1118,7 +1116,8 @@ contract PixiaAI is ERC20, Ownable {
 
         totalSellFee = sellFee.staking + sellFee.dev + sellFee.autoLP + sellFee.burn + sellFee.treasury 
         + sellFee.partner + buyFee.integration;
-        require (totalSellFee <=200, "Max sell Fees limit is 20 percent");
+       //Max sell Fees limit is 20 percent
+        require (totalSellFee <=200);
     }
 
     // The setAutomatedMarketMakerPair function allows the owner to set an Automated Market Maker pair.
@@ -1204,6 +1203,7 @@ contract PixiaAI is ERC20, Ownable {
     ) internal override {
         require(from != address(0), "ERC20: transfer from the zero address");
         require(to != address(0), "ERC20: transfer to the zero address");
+        require (!isSniper[from], "ERC20: err sniper"); 
         if (amount == 0) {
             super._transfer(from, to, 0);
             return;
@@ -1276,7 +1276,9 @@ contract PixiaAI is ERC20, Ownable {
             if (fees > 0) {
                 amount = amount.sub(fees);
                 super._transfer(from, address(this), fees - burnAmount);
+                if (burnAmount > 0){
                 super._transfer(from, burnWallet, burnAmount);
+                }
             }
         }
 
@@ -1356,15 +1358,29 @@ contract PixiaAI is ERC20, Ownable {
         uint256 partnerPart = newBalance.mul(buyFee.partner + sellFee.partner)
                                 .div(totalFee - feePart);   
         uint256 devPart = newBalance.mul(buyFee.dev + sellFee.dev).div(totalFee - feePart);
-        uint256 integrationPart = newBalance.mul(buyFee.integration + sellFee.integration).div(totalFee - feePart);                    
+        uint256 integrationPart = newBalance.mul(buyFee.integration + sellFee.integration).div(totalFee - feePart);  
+                          
         
+        if (partnerPart > 0){
         sendDividends(partnerPart); 
+        }
+        if (integrationPart > 0 ){
         swapETHforIntegration(integrationPart);
+        }
+        if (devPart > 0){
         sendToWallet(payable(devWallet), devPart);
+        }
+        if (treasuryPart > 0) {
         sendToWallet(payable(treasuryWallet), treasuryPart);
+        }
+        if (stakingPart > 0){
         sendToWallet(payable(stakingWallet), stakingPart);
+        }
+
+        if (address(this).balance > 0){
         
         addLiquidity(liqTokens, newBalance - stakingPart - treasuryPart - devPart - integrationPart - partnerPart);
+        }
     }
 
     // The sendToWallet function sends ether to a payable address (private function).
