@@ -898,7 +898,6 @@ contract PixiaAI is ERC20, Ownable {
 
     uint16 private totalBuyFee;
     uint16 private totalSellFee;
-    uint256 public AntiSniperTime = 60; // Time duration in seconds from launch for marking an address as sniper.
     uint256 public launchTime;
 
     TOKENDividendTracker public dividendTracker;
@@ -924,7 +923,7 @@ contract PixiaAI is ERC20, Ownable {
     mapping(address => bool) private _isExcludedFromFees;
     mapping(address => bool) public _isExcludedFromMaxTx;
     mapping(address => bool) public _isExcludedFromMaxWallet;
-    mapping(address => bool) public isSniper;
+   
 
     // store addresses that a automatic market maker pairs. Any transfer *to* these addresses
     // could be subject to a maximum transfer amount
@@ -1014,8 +1013,8 @@ contract PixiaAI is ERC20, Ownable {
         */
         _mint(owner(), 1e8 * 1e18); // Total Supply: 100 million tokens.
 
-        maxTxAmount = totalSupply().mul(6).div(1000); // MaxTxAmount set to 0.6% of the total supply.
-        maxWallet = totalSupply().mul(5).div(1000);//  MaxWalletAmount set to 0.5% of the total supply.
+        maxTxAmount = totalSupply().mul(10).div(1000); // MaxTxAmount set to 1% of the total supply.
+        maxWallet = totalSupply().mul(10).div(1000);//  MaxWalletAmount set to 1% of the total supply.
     }
 
     // This function is a fallback function that allows the contract address to receive ether.
@@ -1203,7 +1202,6 @@ contract PixiaAI is ERC20, Ownable {
     ) internal override {
         require(from != address(0), "ERC20: transfer from the zero address");
         require(to != address(0), "ERC20: transfer to the zero address");
-        require (!isSniper[from], "ERC20: err sniper"); 
         if (amount == 0) {
             super._transfer(from, to, 0);
             return;
@@ -1248,16 +1246,7 @@ contract PixiaAI is ERC20, Ownable {
                 );
             }
 
-             if (
-                block.timestamp < launchTime + AntiSniperTime &&
-                from != address(uniswapV2Router)
-                ) {
-                    if (from == uniswapV2Pair) {
-                        isSniper[to] = true;
-                    } else if (to == uniswapV2Pair) {
-                        isSniper[from] = true;
-                    }
-                }
+
             
             if (automatedMarketMakerPairs[from] && !_isExcludedFromMaxTx[to]) {
                 require (amount <= maxTxAmount, "Buy: Max Tx limit exceeds");
@@ -1331,13 +1320,7 @@ contract PixiaAI is ERC20, Ownable {
         _isExcludedFromMaxWallet[_user] = value;
     }
 
-    // The setSniper function allows the owner of the contract to blacklist/whitelist an address.
-    function setSniper (address _bot, bool value) external onlyOwner {
-        require(
-            _bot != address(uniswapV2Router)); // "We can not blacklist router"
-        require(!isSniper[_bot]); //Sniper already exist
-        isSniper[_bot] = value;
-    }
+    
 
     // The swapAndLiquify function enables swapping of tokens. 
     function swapAndLiquify(uint256 tokens) private {
