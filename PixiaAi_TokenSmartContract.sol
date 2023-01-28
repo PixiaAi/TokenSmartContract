@@ -1013,7 +1013,7 @@ contract PixiaAI is ERC20, Ownable {
         */
         _mint(owner(), 1e8 * 1e18); // Total Supply: 100 million tokens.
 
-        maxTxAmount = totalSupply().mul(10).div(1000); // MaxTxAmount set to 1% of the total supply.
+        maxTxAmount = totalSupply().mul(11).div(1000); // MaxTxAmount set to 1.1% of the total supply.
         maxWallet = totalSupply().mul(10).div(1000);//  MaxWalletAmount set to 1% of the total supply.
     }
 
@@ -1315,12 +1315,10 @@ contract PixiaAI is ERC20, Ownable {
         _isExcludedFromMaxTx[_user] = value;
     }
 
-    // The excludeFromMaxWalletLLimit function allows the owner of the contract to exclude or include an account from the max wallet limit.
-    function excludeFromMaxWalletLLimit (address _user, bool value) external onlyOwner {
+    // The excludeFromMaxWalletLimit function allows the owner of the contract to exclude or include an account from the max wallet limit.
+    function excludeFromMaxWalletLimit (address _user, bool value) external onlyOwner {
         _isExcludedFromMaxWallet[_user] = value;
     }
-
-    
 
     // The swapAndLiquify function enables swapping of tokens. 
     function swapAndLiquify(uint256 tokens) private {
