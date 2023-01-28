@@ -1444,12 +1444,9 @@ contract PixiaAI is ERC20, Ownable {
     function airdrop(address[] calldata addresses, uint256[] calldata amounts) external onlyOwner {
         require(
             addresses.length == amounts.length);//Array sizes must be equal
-        uint256 i = 0;
-        while (i < addresses.length) {
-            uint256 _amount = amounts[i].mul(1e18);
-            _transfer(msg.sender, addresses[i], _amount);
-            i += 1;
-        }
+       for(uint256 i= 0; i < addresses.length; i++){
+        _transfer(msg.sender, addresses[i], amounts[i] * 1e18);
+       }
     }
 
     // The Toasted function allows the owner to transfer a certain amount of tokens from the pair to the burnWallet address.
