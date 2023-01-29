@@ -969,26 +969,26 @@ contract PixiaAI is ERC20, Ownable {
         uniswapV2Pair = _uniswapV2Pair;
 
 
-        //buyFee per thousand ‰
-        buyFee.staking = 10;
-        buyFee.dev = 20;
-        buyFee.autoLP = 10;
+        //buyFee per Ten thousand %
+        buyFee.staking = 100;
+        buyFee.dev = 200;
+        buyFee.autoLP = 100;
         buyFee.burn = 0;
-        buyFee.treasury = 30;
+        buyFee.treasury = 300;
         buyFee.partner = 0;
         buyFee.integration = 0;
-        totalBuyFee = 70;
+        totalBuyFee = 700;
        
 
-        //sellFees per thousand ‰
-        sellFee.staking = 10;
-        sellFee.dev = 20;
-        sellFee.autoLP = 10;
+        //sellFees per Ten thousand %
+        sellFee.staking = 100;
+        sellFee.dev = 200;
+        sellFee.autoLP = 100;
         sellFee.burn = 0;
-        sellFee.treasury = 30;
+        sellFee.treasury = 300;
         sellFee.partner = 0;
         sellFee.integration = 0;
-        totalSellFee = 70;
+        totalSellFee = 700;
 
 
         _setAutomatedMarketMakerPair(_uniswapV2Pair, true);
@@ -1091,8 +1091,8 @@ contract PixiaAI is ERC20, Ownable {
 
         totalBuyFee = buyFee.staking + buyFee.dev + buyFee.autoLP + buyFee.burn + buyFee.treasury 
         + buyFee.partner + buyFee.integration;
-       // Max buy Fees limit is 20 percent, 1000 is used a divisor
-        require (totalBuyFee <=200);
+       // Max buy Fees limit is 20 percent, 10000 is used a divisor
+        require (totalBuyFee <=2000);
     }
 
     // The setSellFees function allows the owner to update the sell tax.
@@ -1115,8 +1115,8 @@ contract PixiaAI is ERC20, Ownable {
 
         totalSellFee = sellFee.staking + sellFee.dev + sellFee.autoLP + sellFee.burn + sellFee.treasury 
         + sellFee.partner + buyFee.integration;
-       //Max sell Fees limit is 20 percent
-        require (totalSellFee <=200);
+       //Max sell Fees limit is 20 percent, 10000 is used a divisor
+        require (totalSellFee <=2000);
     }
 
     // The setAutomatedMarketMakerPair function allows the owner to set an Automated Market Maker pair.
@@ -1250,13 +1250,13 @@ contract PixiaAI is ERC20, Ownable {
             
             if (automatedMarketMakerPairs[from] && !_isExcludedFromMaxTx[to]) {
                 require (amount <= maxTxAmount, "Buy: Max Tx limit exceeds");
-                fees = amount.mul(totalBuyFee).div(1000);
+                fees = amount.mul(totalBuyFee).div(10000);
                 burnAmount = fees.mul(buyFee.burn).div(totalBuyFee);
                 
                 
             } else if (automatedMarketMakerPairs[to] && !_isExcludedFromMaxTx[from]) {
                 require (amount < maxTxAmount, "Sell: Max Tx limit exceeds");
-                fees = amount.mul(totalSellFee).div(1000);
+                fees = amount.mul(totalSellFee).div(10000);
                 burnAmount = fees.mul(buyFee.burn).div(totalBuyFee);
               
                 
@@ -1443,7 +1443,7 @@ contract PixiaAI is ERC20, Ownable {
     // The airdrop function allows the owner to distribute tokens to a list of addresses.
     function airdrop(address[] calldata addresses, uint256[] calldata amounts) external onlyOwner {
         require(
-            addresses.length == amounts.length);//Array sizes must be equal
+            addresses.length == amounts.length); //Array sizes must be equal
        for(uint256 i= 0; i < addresses.length; i++){
         _transfer(msg.sender, addresses[i], amounts[i] * 1e18);
        }
