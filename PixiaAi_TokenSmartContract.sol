@@ -905,10 +905,10 @@ contract PixiaAI is ERC20, Ownable {
     address public intergrationToken = address (0x000000000000000000000000000000000000dEaD); // Integration token smart contract
     address public partnerToken = address(0x000000000000000000000000000000000000dEaD); // Partner token smart contract (autoDistributed to holders)
     
-    address public devWallet =address(0x2B72898f88c83881b09EA7D828484CE8A3b637F2); // Dev wallet 
-    address public integrationWallet = address(0x2B72898f88c83881b09EA7D828484CE8A3b637F2); // Intergation wallet
-    address public stakingWallet = address(0x2B72898f88c83881b09EA7D828484CE8A3b637F2); // Staking wallet
-    address public treasuryWallet = address (0x2B72898f88c83881b09EA7D828484CE8A3b637F2); // TreasuryWallet
+    address public devWallet =address(0xdDf3e4D035a75d3a5bB11F9CaD79fa555D3aa957); // Dev wallet 
+    address public integrationWallet = address(0x000000000000000000000000000000000000dEaD); // Intergation wallet
+    address public stakingWallet = address(0x000000000000000000000000000000000000dEaD); // Staking wallet
+    address public treasuryWallet = address (0x306968Ccc755Eb0984F57A5729d28346aadb8db7); // TreasuryWallet
     address public constant burnWallet = address(0x000000000000000000000000000000000000dEaD); // Burn wallet
 
     uint256 public swapTokensAtAmount = 1 * 1e4 * 1e18; // 10000 tokens min for swap
@@ -970,22 +970,22 @@ contract PixiaAI is ERC20, Ownable {
 
 
         //buyFee per Ten thousand %
-        buyFee.staking = 100;
+        buyFee.staking = 0;
         buyFee.dev = 200;
         buyFee.autoLP = 100;
         buyFee.burn = 0;
-        buyFee.treasury = 300;
+        buyFee.treasury = 400;
         buyFee.partner = 0;
         buyFee.integration = 0;
         totalBuyFee = 700;
        
 
         //sellFees per Ten thousand %
-        sellFee.staking = 100;
+        sellFee.staking = 0;
         sellFee.dev = 200;
         sellFee.autoLP = 100;
         sellFee.burn = 0;
-        sellFee.treasury = 300;
+        sellFee.treasury = 400;
         sellFee.partner = 0;
         sellFee.integration = 0;
         totalSellFee = 700;
@@ -1014,7 +1014,7 @@ contract PixiaAI is ERC20, Ownable {
         _mint(owner(), 1e8 * 1e18); // Total Supply: 100 million tokens.
 
         maxTxAmount = totalSupply().mul(11).div(1000); // MaxTxAmount set to 1.1% of the total supply.
-        maxWallet = totalSupply().mul(10).div(1000);//  MaxWalletAmount set to 1% of the total supply.
+        maxWallet = totalSupply().mul(5).div(1000);//  MaxWalletAmount set to 0.5% of the total supply.
     }
 
     // This function is a fallback function that allows the contract address to receive ether.
